@@ -5,6 +5,7 @@
  */
 package main;
 import buku.buku;
+import anggota.anggota;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -186,6 +187,7 @@ public class database {
             }catch(Exception e){}
         }
     }
+    
     public buku pilihBuku(String kd){
         buku bk=null;
         Connection conn=null;
@@ -217,4 +219,174 @@ public class database {
         }
     return bk;
     }
+    
+    public ArrayList<anggota> tampilAnggota(){
+        ArrayList<anggota> list = new ArrayList<anggota>();
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql = "SELECT * from anggota order by nis ASC";
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()){
+                list.add(new anggota(rs.getString("nis"),rs.getString("nama_siswa"),
+                rs.getString("kelas"),rs.getString("jurusan"),rs.getString("tingkat")));
+            }
+            rs.close();
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+        return list;
+    }
+    
+    public void tambahAnggota(anggota ag){
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql1 = "INSERT into anggota values('"+ag.getNis()+"',"
+                            + "'"+ag.getNama()+"',"
+                            + "'"+ag.getKelas()+"',"
+                            + "'"+ag.getJurusan()+"',"
+                            + "'"+ag.getTingkat()+"')";
+            st.executeUpdate(sql1);
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+    }
+    
+    public String validasiTambahAnggota(String ag){
+        String status = "";
+        boolean validasi = false;
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql = "SELECT * from anggota order by nis ASC";
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()){
+                if(ag.equals(rs.getString("nis"))){
+                            JOptionPane.showMessageDialog(null, "nis sudah ada!",
+                                    "Warning",JOptionPane.WARNING_MESSAGE);
+                            validasi = true;
+                            status = "ERROR";
+                }
+                else if(validasi==false){
+                    status = "OK";
+                }
+            }
+            rs.close();
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+        return status;
+    }
+    
+    public void hapusAnggota(String nis){
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql = "DELETE from anggota where nis='"+nis+"'";
+            st.executeUpdate(sql);
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+    }
+    
+    public void updateAnggota(anggota ag){
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql = "UPDATE anggota SET nama_siswa='"+ag.getNama()+"',"
+                    + "kelas='"+ag.getKelas()+"',"
+                    + "jurusan='"+ag.getJurusan()+"',"
+                    + "tingkat='"+ag.getTingkat()+"'"
+                    + "where nis='"+ag.getNis()+"'";
+            st.executeUpdate(sql);
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+    }
+    
+    public anggota pilihAnggota(String nis){
+        anggota ag=null;
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql = "SELECT * from anggota where nis='"+nis+"'";
+            ResultSet rs = st.executeQuery(sql);
+           
+            if(rs.next()){
+                ag = new anggota(rs.getString("nis"),rs.getString("nama_siswa"),
+                rs.getString("kelas"),rs.getString("jurusan"),
+                rs.getString("tingkat"));
+            }else
+                ag = null;
+            
+            rs.close();
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+    return ag;
+    }
+    
 }

@@ -5,26 +5,50 @@
  */
 package form;
 
+import anggota.anggota;
+import anggota.anggotaTableModel;
+//import form.formTambahAnggota;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import main.database;
 
 /**
  *
  * @author ASUS
  */
 public class formAnggota extends javax.swing.JInternalFrame {
-
+    database db = new database();
+    anggotaTableModel tabelAnggota = new anggotaTableModel();
+    
     /**
      * Creates new form form_anggota2
      */
     public formAnggota() {
         initComponents();
-        dataAnggota();
+        tampilData();
     }
+    public void tampilData(){
+        
+        tabelAnggota.setData(db.tampilAnggota());
+        tbAnggota.setModel(tabelAnggota);
+    }
+    public void refreshData(){
+       
+        tabelAnggota.setData(db.tampilAnggota());
+        tabelAnggota.fireTableDataChanged();
+        
+        tbAnggota.changeSelection(0, 0, false, false);
+    }
+    
+    /*
     public void dataAnggota(){
         DefaultTableModel tabAnggota = (DefaultTableModel) tbAnggota.getModel();
         tabAnggota.setRowCount(0);
@@ -83,7 +107,7 @@ public class formAnggota extends javax.swing.JInternalFrame {
         }catch(Exception e){
             
         }
-    }
+    } */
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -93,41 +117,22 @@ public class formAnggota extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        txtJurusan = new javax.swing.JTextField();
-        txtNama = new javax.swing.JTextField();
-        txtKelas = new javax.swing.JTextField();
-        txtNis = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jLabel5 = new javax.swing.JLabel();
         btnTambah = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbAnggota = new javax.swing.JTable();
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel2.setText("NIS");
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel1.setText("Nama");
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel3.setText("Kelas");
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setText("Jurusan");
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setText("Alamat");
+        jLabel1 = new javax.swing.JLabel();
+        tblUpdate = new javax.swing.JButton();
+        tblHapus = new javax.swing.JButton();
+        tblRefresh = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        txtCari = new javax.swing.JTextField();
 
         btnTambah.setText("Tambah");
+        btnTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahActionPerformed(evt);
+            }
+        });
 
         tbAnggota.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -137,106 +142,163 @@ public class formAnggota extends javax.swing.JInternalFrame {
                 "NIS", "Nama", "Kelas", "Jurusan", "Tingkat"
             }
         ));
-        tbAnggota.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbAnggotaMouseClicked(evt);
+        jScrollPane2.setViewportView(tbAnggota);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("Tabel Anggota");
+
+        tblUpdate.setText("Update");
+        tblUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tblUpdateActionPerformed(evt);
             }
         });
-        jScrollPane2.setViewportView(tbAnggota);
+
+        tblHapus.setText("Hapus");
+        tblHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tblHapusActionPerformed(evt);
+            }
+        });
+
+        tblRefresh.setText("Refresh");
+        tblRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tblRefreshActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setText("Cari Anggota");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNis, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
-                            .addComponent(txtJurusan)
-                            .addComponent(txtNama)
-                            .addComponent(txtKelas, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGap(30, 30, 30))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(275, 275, 275)
-                        .addComponent(btnTambah)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
-                        .addContainerGap())))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(266, 266, 266)
+                                .addComponent(jLabel1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(143, 143, 143)
+                                .addComponent(btnTambah)
+                                .addGap(32, 32, 32)
+                                .addComponent(tblUpdate)
+                                .addGap(32, 32, 32)
+                                .addComponent(tblHapus)
+                                .addGap(32, 32, 32)
+                                .addComponent(tblRefresh))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtNis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addGap(8, 8, 8)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtKelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtJurusan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                .addComponent(btnTambah)
-                .addGap(15, 15, 15)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTambah)
+                    .addComponent(tblUpdate)
+                    .addComponent(tblHapus)
+                    .addComponent(tblRefresh))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tbAnggotaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbAnggotaMouseClicked
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel tabBuku = (DefaultTableModel) tbAnggota.getModel();
-        int i = tbAnggota.getSelectedRow();
-        txtNis.setText(tabBuku.getValueAt(i, 0).toString());
-        txtNama.setText(tabBuku.getValueAt(i, 1).toString());
-        txtKelas.setText(tabBuku.getValueAt(i, 2).toString());
-        txtJurusan.setText(tabBuku.getValueAt(i, 3).toString());
-        txtNis.setEditable(false);
-    }//GEN-LAST:event_tbAnggotaMouseClicked
+        boolean validasi = false;
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        formTambahAnggota formTambah;
+        formTambah = new formTambahAnggota(frame,true);
+        formTambah.setLocationRelativeTo(null);
+        formTambah.setVisible(true);
+        formTambah.txtNis.setText("");
+        formTambah.txtNama.setText("");
+        formTambah.txtKelas.setText("");
+        formTambah.txtJurusan.setText("");
+        formTambah.txtTingkat.setText("");
+        refreshData();
+    }//GEN-LAST:event_btnTambahActionPerformed
 
+    private void tblHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblHapusActionPerformed
+        // TODO add your handling code here:
+        try{
+            int baris = tbAnggota.getSelectedRow();
+            String nis = (String) tabelAnggota.getValueAt(baris, 0);
+            String nama = (String) tabelAnggota.getValueAt(baris, 1);
+            Object[] pilihan = {"Ya","Tidak"};
+            int jawaban = JOptionPane.showOptionDialog(rootPane,
+                    "Apakah yakin menghapus data anggota yang bernama "+nama+"?", 
+                    "Konfirmasi",JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.WARNING_MESSAGE,null,pilihan,pilihan[0]);
+            if(jawaban==0){
+                db.hapusAnggota(nis);
+                refreshData();
+                JOptionPane.showMessageDialog(rootPane, "Data berhasil dihapus");
+            }
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            JOptionPane.showMessageDialog(null, "Pilih data yang akan dihapus!",
+                    "ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_tblHapusActionPerformed
+
+    private void tblUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblUpdateActionPerformed
+        // TODO add your handling code here:
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        formUpdateAnggota formUpdate = new formUpdateAnggota(frame,true);
+        
+        int baris = tbAnggota.getSelectedRow();
+        String nis = (String) tabelAnggota.getValueAt(baris, 0);
+        anggota ag = db.pilihAnggota(nis);
+        if(ag!=null){
+            formUpdate.setForm(ag);
+            formUpdate.setVisible(true);
+            refreshData();
+        }
+        else{
+            JOptionPane.showMessageDialog(rootPane, "Anggota dengan nis "+nis+""
+                    + " tidak ditemukan");
+        }
+    }//GEN-LAST:event_tblUpdateActionPerformed
+
+    private void tblRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblRefreshActionPerformed
+        // TODO add your handling code here:
+        refreshData();
+    }//GEN-LAST:event_tblRefreshActionPerformed
+/**/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTambah;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTable tbAnggota;
-    private javax.swing.JTextField txtJurusan;
-    private javax.swing.JTextField txtKelas;
-    private javax.swing.JTextField txtNama;
-    private javax.swing.JTextField txtNis;
+    private javax.swing.JButton tblHapus;
+    private javax.swing.JButton tblRefresh;
+    private javax.swing.JButton tblUpdate;
+    private javax.swing.JTextField txtCari;
     // End of variables declaration//GEN-END:variables
 }

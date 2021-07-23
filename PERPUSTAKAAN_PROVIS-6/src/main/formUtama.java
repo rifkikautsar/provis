@@ -33,6 +33,7 @@ public class formUtama extends javax.swing.JFrame {
             System.exit(0);
         }else{
         initComponents();
+        //this.setExtendedState(MAXIMIZED_BOTH);
         }
         
     }
@@ -165,6 +166,7 @@ public class formUtama extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAnggotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnggotaActionPerformed
