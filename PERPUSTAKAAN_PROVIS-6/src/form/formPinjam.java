@@ -5,6 +5,9 @@
  */
 package form;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author ASUS
@@ -43,7 +46,7 @@ public class formPinjam extends javax.swing.JInternalFrame {
         txtjudul = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txttglkembali = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnTambah = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -70,7 +73,12 @@ public class formPinjam extends javax.swing.JInternalFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setText("Tanggal Kembali");
 
-        jButton1.setText("Simpan");
+        btnTambah.setText("Tambah");
+        btnTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Batal");
 
@@ -107,7 +115,7 @@ public class formPinjam extends javax.swing.JInternalFrame {
                             .addComponent(txttglkembali, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(214, 214, 214)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(32, Short.MAX_VALUE))
@@ -141,7 +149,7 @@ public class formPinjam extends javax.swing.JInternalFrame {
                     .addComponent(txttglkembali, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(btnTambah)
                     .addComponent(jButton2))
                 .addContainerGap(81, Short.MAX_VALUE))
         );
@@ -149,9 +157,19 @@ public class formPinjam extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        // TODO add your handling code here:
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        formTambahPinjam formTambah;
+        formTambah = new formTambahPinjam(frame,true);
+        formTambah.setLocationRelativeTo(null);
+        formTambah.setVisible(true);
+        
+    }//GEN-LAST:event_btnTambahActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnTambah;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
