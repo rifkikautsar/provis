@@ -5,6 +5,9 @@
  */
 package form;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author ASUS
@@ -118,6 +121,16 @@ public class formPinjam extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        // TODO add your handling code here:
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        formTambahPinjam formTambah;
+        formTambah = new formTambahPinjam(frame,true);
+        formTambah.setLocationRelativeTo(null);
+        formTambah.setVisible(true);
+        
+    }//GEN-LAST:event_btnTambahActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
