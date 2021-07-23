@@ -9,6 +9,7 @@ import anggota.anggota;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import peminjaman.peminjaman;
 /**
  *
  * @author rifki
@@ -219,7 +220,7 @@ public class database {
         }
     return bk;
     }
-    
+    //anggota
     public ArrayList<anggota> tampilAnggota(){
         ArrayList<anggota> list = new ArrayList<anggota>();
         Connection conn=null;
@@ -387,6 +388,94 @@ public class database {
             }catch(Exception e){}
         }
     return ag;
+    }
+    public ArrayList<anggota> cariAnggota(String keyword){
+        ArrayList<anggota> list = new ArrayList<anggota>();
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql = "SELECT * from anggota where nis like '%"+keyword+"%'"
+                    + "or nama_siswa like '%"+keyword+"%'";
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()){
+                list.add(new anggota(rs.getString("nis"),rs.getString("nama_siswa"),
+                rs.getString("kelas"),rs.getString("jurusan"),rs.getString("tingkat")));
+            }
+            rs.close();
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+        return list;
+    }
+    //Peminjaman
+    public ArrayList<peminjaman> tampilPeminjaman(){
+        ArrayList<peminjaman> list = new ArrayList<peminjaman>();
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql = "SELECT p.no_pinjam, p.nis, a.nama_siswa, p.kode_buku,"
+                    + "b.judul_buku, p.tgl_pinjam, p.nip "
+                    + "from peminjaman p join anggota a using(nis)"
+                    + "join buku b using(kode_buku) order by a.nama_siswa ASC";
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()){
+                list.add(new peminjaman(rs.getString("no_pinjam"),
+                    rs.getString("nis"),
+                    rs.getString("nama_siswa"),rs.getString("kode_buku"),
+                    rs.getString("judul_buku"),rs.getString("tgl_pinjam"),
+                    rs.getString("nip")));
+            }
+            rs.close();
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+        return list;
+    }
+    public void tambahPeminjaman(peminjaman pj){
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql1 = "INSERT into peminjaman values('"+pj.getNoPinjam()+"',"
+                            + "'"+pj.getTglPinjam()+"',"
+                            + "'"+pj.getNIS()+"',"
+                            + "'"+pj.getKdBuku()+"',"
+                            + "'"+pj.getNIP()+"')";
+            st.executeUpdate(sql1);
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
     }
     
 }

@@ -5,19 +5,38 @@
  */
 package form;
 
+import buku.bukuTableModel;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import main.database;
+import peminjaman.peminjamanTableModel;
+
 /**
  *
  * @author ASUS
  */
 public class formPinjam extends javax.swing.JInternalFrame {
-
+    database db = new database();
+    peminjamanTableModel tabelPeminjaman = new peminjamanTableModel();
     /**
      * Creates new form form_pinjam2
      */
     public formPinjam() {
         initComponents();
+        tampilData();
     }
-
+    public void tampilData(){
+        
+        tabelPeminjaman.setData(db.tampilPeminjaman());
+        tbPinjam.setModel(tabelPeminjaman);
+    }
+    public void refreshData(){
+       
+        tabelPeminjaman.setData(db.tampilPeminjaman());
+        tabelPeminjaman.fireTableDataChanged();
+        
+        tbPinjam.changeSelection(0, 0, false, false);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,7 +47,7 @@ public class formPinjam extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbPinjam = new javax.swing.JTable();
         tblTambah = new javax.swing.JButton();
         tblUpdate = new javax.swing.JButton();
         tblHapus = new javax.swing.JButton();
@@ -37,20 +56,22 @@ public class formPinjam extends javax.swing.JInternalFrame {
         txtCari = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbPinjam.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "ID Peminjaman", "ID Anggota", "Kode Buku", "Judul Buku", "Penerbit", "Tanggal Pinjam", "Tanggal Kembali", "Jumlah"
+                "ID Peminjaman", "NIS", "Kode Buku", "Tanggal Pinjam", "ID Pegawai"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbPinjam);
 
         tblTambah.setText("Tambah");
+        tblTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tblTambahActionPerformed(evt);
+            }
+        });
 
         tblUpdate.setText("Update");
 
@@ -63,6 +84,11 @@ public class formPinjam extends javax.swing.JInternalFrame {
         jLabel2.setText("Cari");
 
         jButton1.setText("Refresh");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -119,13 +145,28 @@ public class formPinjam extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tblTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblTambahActionPerformed
+        // TODO add your handling code here:
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        formTambahPinjam formTambah;
+        formTambah = new formTambahPinjam(frame,true);
+        formTambah.setLocationRelativeTo(null);
+        formTambah.setVisible(true);
+        refreshData();
+    }//GEN-LAST:event_tblTambahActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        refreshData();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbPinjam;
     private javax.swing.JButton tblHapus;
     private javax.swing.JButton tblTambah;
     private javax.swing.JButton tblUpdate;
