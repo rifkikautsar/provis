@@ -54,7 +54,7 @@ public static class UIbaru extends Component {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new formUtama().setVisible(true);
+                new formLogin().setVisible(true);
             }
         });
     }

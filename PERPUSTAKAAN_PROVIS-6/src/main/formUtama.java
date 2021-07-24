@@ -26,45 +26,12 @@ import main.formLogin;
  */
 public class formUtama extends javax.swing.JFrame {
     database db = new database();
-    JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-    formLogin formLogin = new formLogin();
     
     /**
      * Creates new form form_utama
      */
     public formUtama() {
-        if(koneksi()==0){
-            System.exit(0);
-        }else{
-        formLogin.setVisible(true);
-        //if (formLogin.validasi()=="OK"){
-            //System.out.println("Login Sukses");
-            initComponents();
-            //formLogin.setVisible(false);
-            //formLogin.dispose();
-        //}
-        //else {
-            //System.out.println("Login Gagal");
-        //}
-        
-        //this.setExtendedState(MAXIMIZED_BOTH);
-        }
-        
-    }
-    public int koneksi(){
-        
-        int pilihan = 0;
-        try{
-            Class.forName(db.driver);
-            Connection conn = DriverManager.getConnection(
-                    db.url, db.user, db.pwd);
-            JOptionPane.showMessageDialog(rootPane, "Koneksi Berhasil","Koneksi",JOptionPane.INFORMATION_MESSAGE);
-            pilihan = 1;
-        }catch(Exception e){
-            JOptionPane.showConfirmDialog(rootPane, "Koneksi GAGAL : "+e,
-                    "Koneksi",JOptionPane.CLOSED_OPTION);
-        }
-        return pilihan;
+        initComponents();
     }
     /**
      * This method is called from within the constructor to initialize the form.

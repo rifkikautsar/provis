@@ -5,7 +5,10 @@
  */
 package main;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import petugas.petugas;
 import main.database;
@@ -15,24 +18,35 @@ import main.database;
  * @author ASUS
  */
 public class formLogin extends javax.swing.JFrame {
-    public boolean validasi = false;
-    
+    private String username = "";
+    private String password = "";
+    formUtama utama = new formUtama();
     database db = new database();
     /**
      * Creates new form formLogin
      */
     public formLogin() {
-        initComponents();
+        if(koneksi()==0){
+            System.exit(0);
+        }else{
+            initComponents();
+        }
     }
-
-    public int validasi(){
-        //String status = st;
+    public int koneksi(){
+        
         int pilihan = 0;
-        
-        
+        try{
+            Class.forName(db.driver);
+            Connection conn = DriverManager.getConnection(
+                    db.url, db.user, db.pwd);
+            JOptionPane.showMessageDialog(rootPane, "Koneksi Berhasil","Koneksi",JOptionPane.INFORMATION_MESSAGE);
+            pilihan = 1;
+        }catch(Exception e){
+            JOptionPane.showConfirmDialog(rootPane, "Koneksi GAGAL : "+e,
+                    "Koneksi",JOptionPane.CLOSED_OPTION);
+        }
         return pilihan;
     }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -126,14 +140,16 @@ public class formLogin extends javax.swing.JFrame {
 
     private void tblLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblLoginActionPerformed
         // TODO add your handling code here:
-        String username = txtUsername.getText();
-        String password = txtPassword.getText();
-        
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        formUtama formUtama = new formUtama();
+        username = txtUsername.getText();
+        password = txtPassword.getText();
         
         if(db.loginUser(username,password).equals("OK")){
-            validasi();
+            this.dispose();
+            utama.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(rootPane, "Username / Password tidak sama!",
+                    "ERROR",JOptionPane.ERROR_MESSAGE);
+            
         }
     }//GEN-LAST:event_tblLoginActionPerformed
 
