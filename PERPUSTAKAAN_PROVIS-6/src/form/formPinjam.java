@@ -7,6 +7,7 @@ package form;
 
 import buku.bukuTableModel;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import main.database;
 import peminjaman.peminjamanTableModel;
@@ -74,8 +75,18 @@ public class formPinjam extends javax.swing.JInternalFrame {
         });
 
         tblUpdate.setText("Update");
+        tblUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tblUpdateActionPerformed(evt);
+            }
+        });
 
         tblHapus.setText("Hapus");
+        tblHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tblHapusActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Tabel Peminjaman");
@@ -159,6 +170,50 @@ public class formPinjam extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         refreshData();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void tblHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblHapusActionPerformed
+        // TODO add your handling code here:
+        try{
+            int baris = tbPinjam.getSelectedRow();
+            String no = (String) tabelPeminjaman.getValueAt(baris, 0);
+            String ns = (String) tabelPeminjaman.getValueAt(baris, 2);
+            Object[] pilihan = {"Ya","Tidak"};
+            int jawaban = JOptionPane.showOptionDialog(rootPane,
+                    "Apakah yakin menghapus data peminjaman dengan nomor "+no+""
+                            + " atas nama "+ns+"?", 
+                    "Konfirmasi",JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.WARNING_MESSAGE,null,pilihan,pilihan[0]);
+            if(jawaban==0){
+                db.hapusPeminjaman(no);
+                refreshData();
+                JOptionPane.showMessageDialog(rootPane, "Data berhasil dihapus");
+            }
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            JOptionPane.showMessageDialog(null, "Pilih data yang akan dihapus!",
+                    "ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_tblHapusActionPerformed
+
+    private void tblUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblUpdateActionPerformed
+        // TODO add your handling code here:
+        try{
+        int baris = tbPinjam.getSelectedRow();
+            String no = (String) tabelPeminjaman.getValueAt(baris, 0);
+            String tgl = (String) tabelPeminjaman.getValueAt(baris, 5);
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        formUpdatePinjam formUpdate;
+        formUpdate = new formUpdatePinjam(frame,true);
+        formUpdate.setForm(no, tgl);
+        formUpdate.setLocationRelativeTo(null);
+        formUpdate.setVisible(true);
+        refreshData();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Pilih data yang akan dihapus!"+e,
+                    "ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_tblUpdateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

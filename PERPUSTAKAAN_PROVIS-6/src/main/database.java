@@ -477,5 +477,46 @@ public class database {
             }catch(Exception e){}
         }
     }
+    public void hapusPeminjaman(String no){
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql = "DELETE from peminjaman where no_pinjam='"+no+"'";
+            st.executeUpdate(sql);
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+    }
+    public void updatePeminjaman(String no, String tgl){
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql = "UPDATE peminjaman SET tgl_pinjam='"+tgl+"'"
+                    + "where no_pinjam='"+no+"'";
+            st.executeUpdate(sql);
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+    }
     
 }
