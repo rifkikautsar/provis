@@ -519,4 +519,41 @@ public class database {
         }
     }
     
+    public String loginUser(String username, String password){
+        String status = "";
+        boolean validasi = false;
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql = "SELECT * from petugas where username='"+username+"'";
+            ResultSet rs = st.executeQuery(sql);
+           
+            while(rs.next()){
+                if (rs.getString("pass").equals(password)) {
+                    validasi = true;
+                    status = "OK";
+                }
+                else if(validasi==false) {
+                    status = "ERROR";
+                }
+            } 
+                //pt = null;
+            
+            rs.close();
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+    return status;
+    }
+    
 }

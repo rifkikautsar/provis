@@ -14,16 +14,20 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import main.database;
+import main.formLogin;
 /**
  *
  * @author Darrel
  */
 public class formUtama extends javax.swing.JFrame {
     database db = new database();
+    JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+    formLogin formLogin = new formLogin();
     
     /**
      * Creates new form form_utama
@@ -32,7 +36,17 @@ public class formUtama extends javax.swing.JFrame {
         if(koneksi()==0){
             System.exit(0);
         }else{
-        initComponents();
+        formLogin.setVisible(true);
+        //if (formLogin.validasi()=="OK"){
+            //System.out.println("Login Sukses");
+            initComponents();
+            //formLogin.setVisible(false);
+            //formLogin.dispose();
+        //}
+        //else {
+            //System.out.println("Login Gagal");
+        //}
+        
         //this.setExtendedState(MAXIMIZED_BOTH);
         }
         
