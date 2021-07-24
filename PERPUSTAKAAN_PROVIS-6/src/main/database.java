@@ -555,5 +555,39 @@ public class database {
         }
     return status;
     }
-    
+    public ArrayList<peminjaman> cariPeminjaman(String keyword){
+        ArrayList<peminjaman> list = new ArrayList<peminjaman>();
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql = "SELECT p.no_pinjam, p.nis, a.nama_siswa, p.kode_buku,"
+                    + "b.judul_buku, p.tgl_pinjam, p.nip "
+                    + "from peminjaman p join anggota a using(nis) "
+                    + "join buku b using(kode_buku) where b.judul_buku like '%"+keyword+"%'"
+                    + "or a.nama_siswa like '%"+keyword+"%'";
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()){
+                list.add(new peminjaman(rs.getString("no_pinjam"),
+                    rs.getString("nis"),
+                    rs.getString("nama_siswa"),rs.getString("kode_buku"),
+                    rs.getString("judul_buku"),rs.getString("tgl_pinjam"),
+                    rs.getString("nip")));
+            }
+            rs.close();
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+        return list;
+    }
 }

@@ -94,6 +94,12 @@ public class formPinjam extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Cari");
 
+        txtCari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCariKeyReleased(evt);
+            }
+        });
+
         jButton1.setText("Refresh");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -214,6 +220,15 @@ public class formPinjam extends javax.swing.JInternalFrame {
         }
         
     }//GEN-LAST:event_tblUpdateActionPerformed
+
+    private void txtCariKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKeyReleased
+        // TODO add your handling code here:
+        String keyword = txtCari.getText();
+        tbPinjam.setModel(tabelPeminjaman);
+        tabelPeminjaman.setData(db.cariPeminjaman(keyword));
+        tabelPeminjaman.fireTableDataChanged();
+        tbPinjam.changeSelection(0, 0, false, false);
+    }//GEN-LAST:event_txtCariKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
