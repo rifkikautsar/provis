@@ -6,10 +6,26 @@
 package form;
 
 import buku.bukuTableModel;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import main.database;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import peminjaman.peminjamanTableModel;
 
 /**
@@ -56,6 +72,7 @@ public class formPinjam extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         txtCari = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        btnCetak = new javax.swing.JButton();
 
         tbPinjam.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -107,16 +124,23 @@ public class formPinjam extends javax.swing.JInternalFrame {
             }
         });
 
+        btnCetak.setText("Cetak Laporan");
+        btnCetak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCetakActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(253, 253, 253)
@@ -126,18 +150,19 @@ public class formPinjam extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 27, Short.MAX_VALUE)))
+                        .addGap(0, 27, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addComponent(tblTambah)
+                        .addGap(31, 31, 31)
+                        .addComponent(tblUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(tblHapus)
+                        .addGap(35, 35, 35)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCetak)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(tblTambah)
-                .addGap(31, 31, 31)
-                .addComponent(tblUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addComponent(tblHapus)
-                .addGap(35, 35, 35)
-                .addComponent(jButton1)
-                .addGap(140, 140, 140))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,8 +180,9 @@ public class formPinjam extends javax.swing.JInternalFrame {
                     .addComponent(tblTambah)
                     .addComponent(tblUpdate)
                     .addComponent(tblHapus)
-                    .addComponent(jButton1))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addComponent(jButton1)
+                    .addComponent(btnCetak))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
@@ -230,8 +256,36 @@ public class formPinjam extends javax.swing.JInternalFrame {
         tbPinjam.changeSelection(0, 0, false, false);
     }//GEN-LAST:event_txtCariKeyReleased
 
+    private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
+        // TODO add your handling code here:
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(db.driver);
+            conn = DriverManager.getConnection(db.url,db.user,db.pwd);
+            
+            //cetak data
+            HashMap param = new HashMap();
+            
+            //ambil file
+            File file = new File("src/report/cetakPeminjaman.jasper");
+            JasperReport jp = (JasperReport)JRLoader.loadObject(file);
+            //
+            
+            JasperPrint jasperprint = JasperFillManager.fillReport(jp, param,conn);
+//            File pdf = File.createTempFile("output.", ".pdf");
+//            JasperExportManager.exportReportToPdfStream(jasperprint, new FileOutputStream(pdf));
+            
+            JasperViewer.viewReport(jasperprint,false);
+            JasperViewer.setDefaultLookAndFeelDecorated(true);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(rootPane, "Error "+e);
+        }
+    }//GEN-LAST:event_btnCetakActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCetak;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
