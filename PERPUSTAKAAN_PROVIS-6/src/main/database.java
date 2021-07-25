@@ -26,13 +26,14 @@ public class database {
         ArrayList<buku> list = new ArrayList<buku>();
         Connection conn=null;
         Statement st = null;
+        CallableStatement cs = null;
         try{
             Class.forName(driver);
             conn = DriverManager.getConnection(url,user,pwd);
-            st = conn.createStatement();
-            String sql = "SELECT * from buku order by kode_buku ASC";
-            ResultSet rs = st.executeQuery(sql);
             
+            cs = conn.prepareCall("{ call tampilBuku() }");
+            //ResultSet rs = st.executeQuery(sql);
+            ResultSet rs = cs.executeQuery();
             while(rs.next()){
                 list.add(new buku(rs.getString("kode_buku"),rs.getString("judul_buku"),
                 rs.getString("penerbit"),rs.getString("tahun"),rs.getInt("stok")));
@@ -86,12 +87,12 @@ public class database {
         boolean validasi = false;
         Connection conn=null;
         Statement st = null;
+        CallableStatement cs = null;
         try{
             Class.forName(driver);
             conn = DriverManager.getConnection(url,user,pwd);
-            st = conn.createStatement();
-            String sql = "SELECT * from buku order by kode_buku ASC";
-            ResultSet rs = st.executeQuery(sql);
+            cs = conn.prepareCall("{ call tampilBuku() }");
+            ResultSet rs = cs.executeQuery();
             
             while(rs.next()){
                 if(kd.equals(rs.getString("kode_buku"))){
@@ -121,16 +122,23 @@ public class database {
     public void tambahBuku(buku bk){
         Connection conn=null;
         Statement st = null;
+        CallableStatement cs = null;
         try{
             Class.forName(driver);
             conn = DriverManager.getConnection(url,user,pwd);
             st = conn.createStatement();
-            String sql1 = "INSERT into buku values('"+bk.getkdBuku()+"',"
-                            + "'"+bk.getJudul()+"',"
-                            + "'"+bk.getPenerbit()+"',"
-                            + "'"+bk.getTahun()+"',"
-                            + "'"+bk.getStok()+"')";
-            st.executeUpdate(sql1);
+//            String sql1 = "INSERT into buku values('"+bk.getkdBuku()+"',"
+//                            + "'"+bk.getJudul()+"',"
+//                            + "'"+bk.getPenerbit()+"',"
+//                            + "'"+bk.getTahun()+"',"
+//                            + "'"+bk.getStok()+"')";
+            cs = conn.prepareCall("{ call inputBuku(?,?,?,?,?) }");
+            cs.setString("kode_buku", bk.getkdBuku());
+            cs.setString("judul_buku", bk.getJudul());
+            cs.setString("penerbit", bk.getPenerbit());
+            cs.setString("tahun", bk.getTahun());
+            cs.setInt("stok", bk.getStok());
+            cs.executeUpdate();
         }catch(Exception e){
             System.out.println("Error : "+e.getMessage());
         }finally{
@@ -427,10 +435,7 @@ public class database {
             Class.forName(driver);
             conn = DriverManager.getConnection(url,user,pwd);
             st = conn.createStatement();
-            String sql = "SELECT p.no_pinjam, p.nis, a.nama_siswa, p.kode_buku,"
-                    + "b.judul_buku, p.tgl_pinjam, p.nip "
-                    + "from peminjaman p join anggota a using(nis)"
-                    + "join buku b using(kode_buku) order by a.nama_siswa ASC";
+            String sql = "SELECT * from vTampilPeminjaman";
             ResultSet rs = st.executeQuery(sql);
             
             while(rs.next()){

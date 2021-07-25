@@ -8,6 +8,9 @@ package form;
 import anggota.anggotaTableModel;
 import buku.bukuTableModel;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.Date;
 import java.util.Random;
 import javax.swing.JOptionPane;
@@ -66,8 +69,6 @@ public class formTambahPinjam extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         txtNama = new javax.swing.JTextField();
         txtTglPinjam = new com.toedter.calendar.JDateChooser();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -156,10 +157,6 @@ public class formTambahPinjam extends javax.swing.JDialog {
 
         txtNama.setEditable(false);
 
-        jLabel1.setText("* Buku hanya bisa dipinjam maksimal 3 hari. Apabila buku tidak");
-
-        jLabel6.setText(" dikembalikan dalam 3 hari maka akan dikenakan denda.");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -170,7 +167,7 @@ public class formTambahPinjam extends javax.swing.JDialog {
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
                 .addComponent(txtCariBuku, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 16, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,20 +200,11 @@ public class formTambahPinjam extends javax.swing.JDialog {
                                             .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(35, 35, 35)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txtKode)
-                                            .addComponent(txtJudul, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(10, 10, 10)
-                                                .addComponent(jLabel6))
-                                            .addComponent(jLabel1))
-                                        .addGap(0, 0, Short.MAX_VALUE)))))
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtKode)
+                                    .addComponent(txtJudul, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE))))
                         .addGap(23, 23, 23))))
         );
         layout.setVerticalGroup(
@@ -237,18 +225,15 @@ public class formTambahPinjam extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtTglPinjam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel7)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addComponent(jLabel7)
+                        .addGap(18, 18, 18))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(txtTglPinjam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCariAnggota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
@@ -309,6 +294,17 @@ public class formTambahPinjam extends javax.swing.JDialog {
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
+                
+        if(txtTglPinjam.getDate()==null || txtJudul.getText(
+        ).equals("")||
+           txtKode.getText().equals("")||
+           txtNIS.getText().equals("")|| 
+           txtNama.getText().equals("")){
+        JOptionPane.showMessageDialog(rootPane, "Tidak boleh ada field yang kosong!",
+                        "ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            //generate no_pinjam
         Random rand = new Random();
         int random = rand.nextInt(500);
         int count = 0;
@@ -318,7 +314,7 @@ public class formTambahPinjam extends javax.swing.JDialog {
         noPinjam += date.format(txtTglPinjam.getDate());
         count += random;
         noPinjam += String.valueOf(count);
-        
+        //get value
         String pattern2 = "yyyy-MM-dd";
         SimpleDateFormat date2 = new SimpleDateFormat(pattern2);
         String kdBuku = txtKode.getText();
@@ -327,19 +323,17 @@ public class formTambahPinjam extends javax.swing.JDialog {
         String tgl = date2.format(txtTglPinjam.getDate());
         String nip = "1";
         String nama = txtNama.getText();
-        
-        if(judul.equals("")||kdBuku.equals("")||nis.equals("")||tgl.equals("")){
-        JOptionPane.showMessageDialog(rootPane, "Tidak boleh ada field yang kosong!",
-                        "ERROR",JOptionPane.ERROR_MESSAGE);
-        }
-        else{
         int pilihan = JOptionPane.showConfirmDialog(rootPane, "Apakah data yang dimasukkan sudah benar?",
                 "Konfirmasi",JOptionPane.YES_NO_OPTION);
             if (pilihan==0){
-                    db.tambahPeminjaman(new peminjaman(noPinjam,nis,nama,kdBuku,judul,tgl,nip));
-                JOptionPane.showMessageDialog(rootPane, "Data berhasil ditambahkan",
+                    try{
+                        db.tambahPeminjaman(new peminjaman(noPinjam,nis,nama,kdBuku,judul,tgl,nip));
+                        JOptionPane.showMessageDialog(rootPane, "Data berhasil ditambahkan",
                         "Info",JOptionPane.INFORMATION_MESSAGE);
-                setVisible(false);
+                        setVisible(false);
+                    }catch(Exception e){
+                        JOptionPane.showMessageDialog(rootPane, "Data gagal ditambahkan : "+e);
+                    }
                 }
         }
     }//GEN-LAST:event_btnSimpanActionPerformed
@@ -352,13 +346,11 @@ public class formTambahPinjam extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatal;
     private javax.swing.JButton btnSimpan;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
