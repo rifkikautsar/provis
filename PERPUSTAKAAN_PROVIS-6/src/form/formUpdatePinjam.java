@@ -125,23 +125,23 @@ public class formUpdatePinjam extends javax.swing.JDialog {
 
     private void tblSimpan2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblSimpan2ActionPerformed
         // TODO add your handling code here:
-        String pattern2 = "yyyy-MM-dd";
-        SimpleDateFormat date2 = new SimpleDateFormat(pattern2);
         String no = txtNoPinjam.getText();
-        String tgl = date2.format(txtTglPinjam.getDate());
+        
         
 
-        if(no.equals("")||tgl.equals("")){
+        if(no.equals("")||txtTglPinjam.getDate()==null){
             JOptionPane.showMessageDialog(rootPane, "Tidak boleh ada field yang kosong!",
                 "ERROR",JOptionPane.ERROR_MESSAGE);
         }
         else{
+            String pattern2 = "yyyy-MM-dd";
+            SimpleDateFormat date2 = new SimpleDateFormat(pattern2);
+            String tgl = date2.format(txtTglPinjam.getDate());
             int pilihan = JOptionPane.showConfirmDialog(rootPane, "Apakah data yang dimasukkan sudah benar?",
                 "Konfirmasi",JOptionPane.YES_NO_OPTION);
             if (pilihan==0){
                 db.updatePeminjaman(no,tgl);
-            JOptionPane.showMessageDialog(rootPane, "Data berhasil diupdate",
-                "Info",JOptionPane.INFORMATION_MESSAGE);
+            
             setVisible(false);
         }
         }

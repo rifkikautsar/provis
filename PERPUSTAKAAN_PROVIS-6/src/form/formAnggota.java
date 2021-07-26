@@ -264,7 +264,7 @@ public class formAnggota extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(rootPane, "Data berhasil dihapus");
             }
         }
-        catch (ArrayIndexOutOfBoundsException e){
+        catch (IndexOutOfBoundsException e){
             JOptionPane.showMessageDialog(null, "Pilih data yang akan dihapus!",
                     "ERROR",JOptionPane.ERROR_MESSAGE);
         }
@@ -273,21 +273,29 @@ public class formAnggota extends javax.swing.JInternalFrame {
 
     private void tblUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblUpdateActionPerformed
         // TODO add your handling code here:
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        formUpdateAnggota formUpdate = new formUpdateAnggota(frame,true);
-        
-        int baris = tbAnggota.getSelectedRow();
-        String nis = (String) tabelAnggota.getValueAt(baris, 0);
-        anggota ag = db.pilihAnggota(nis);
-        if(ag!=null){
+        try{
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            formUpdateAnggota formUpdate = new formUpdateAnggota(frame,true);
+
+            int baris = tbAnggota.getSelectedRow();
+            String nis = (String) tabelAnggota.getValueAt(baris, 0);
+            anggota ag = db.pilihAnggota(nis);
+            if(ag!=null){
             formUpdate.setForm(ag);
             formUpdate.setVisible(true);
             refreshData();
-        }
+            }
         else{
             JOptionPane.showMessageDialog(rootPane, "Anggota dengan nis "+nis+""
                     + " tidak ditemukan");
+            }
+        }catch(IndexOutOfBoundsException e){
+            JOptionPane.showMessageDialog(null, "Pilih data yang akan dihapus!",
+                    "ERROR",JOptionPane.ERROR_MESSAGE);
         }
+        
+        
+        
     }//GEN-LAST:event_tblUpdateActionPerformed
 
     private void tblRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblRefreshActionPerformed

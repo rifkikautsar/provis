@@ -5,6 +5,7 @@
  */
 package main;
 
+
 import java.awt.Component;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -21,6 +22,7 @@ public static class UIbaru extends Component {
         public UIbaru() {
             
         }
+        
     }
     /**
      * @param args the command line arguments

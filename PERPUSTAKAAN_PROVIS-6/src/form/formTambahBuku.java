@@ -158,8 +158,6 @@ public class formTambahBuku extends javax.swing.JDialog {
                 if(db.validasiTambahBuku(kode_buku).equals("OK")){
                     db.tambahBuku(new buku(txtKode.getText(),txtJudul.getText(),txtPenerbit.getText(),
                 txtTahun.getText(),Integer.valueOf(txtStok.getText())));
-                JOptionPane.showMessageDialog(rootPane, "Data berhasil ditambahkan",
-                        "Info",JOptionPane.INFORMATION_MESSAGE);
                 setVisible(false);
                 }
             }   

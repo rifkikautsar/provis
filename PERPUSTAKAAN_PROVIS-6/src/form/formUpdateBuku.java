@@ -149,7 +149,7 @@ public class formUpdateBuku extends javax.swing.JDialog {
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
-
+        
         String kode_buku = txtKode.getText();
         String judul = txtJudul.getText();
         String penerbit = txtPenerbit.getText();
@@ -167,10 +167,8 @@ public class formUpdateBuku extends javax.swing.JDialog {
             if (pilihan==0){
                     db.updateBuku(new buku(txtKode.getText(),txtJudul.getText(),txtPenerbit.getText(),
                         txtTahun.getText(),Integer.valueOf(txtStok.getText())));
-                JOptionPane.showMessageDialog(rootPane, "Data berhasil diupdate",
-                    "Info",JOptionPane.INFORMATION_MESSAGE);
                 setVisible(false);
-        }
+            }
         }
     }//GEN-LAST:event_btnSimpanActionPerformed
 

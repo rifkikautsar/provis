@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package peminjaman;
+package pengembalian;
 
-import peminjaman.*;
+import pengembalian.*;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
@@ -14,14 +14,13 @@ import javax.swing.table.AbstractTableModel;
  * @author rifki
  */
 
-public class peminjamanTableModel extends AbstractTableModel {
+public class pengembalianTableModel extends AbstractTableModel {
 
-    private ArrayList<peminjaman> data;
-    private String[] namaField = {"ID Peminjaman","NIS","Nama Siswa",
-                                  "Kode Buku","Judul","Tanggal Pinjam",
-                                  "Status","Pegawai"};
+    private ArrayList<pengembalian> data;
+    private String[] namaField = {"ID Pinjam","NIS","Nama Siswa","Judul",
+                                  "Tgl Pinjam","Tgl Kembali","Denda","Pegawai"};
     
-    public void setData(ArrayList<peminjaman> dt){
+    public void setData(ArrayList<pengembalian> dt){
         this.data = dt;
     }
     @Override
@@ -36,15 +35,15 @@ public class peminjamanTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int baris, int kolom) {
-        peminjaman pj = data.get(baris);
+        pengembalian pj = data.get(baris);
         switch(kolom){
             case 0 : return pj.getNoPinjam();
             case 1 : return pj.getNIS();
             case 2 : return pj.getNamaSiswa();
-            case 3 : return pj.getKdBuku();
-            case 4 : return pj.getJudulBuku();
-            case 5 : return pj.getTglPinjam();
-            case 6 : return pj.getStatus();
+            case 3 : return pj.getJudulBuku();
+            case 4 : return pj.getTglPinjam();
+            case 5 : return pj.getTglKembali();
+            case 6 : return pj.getDenda();
             case 7 : return pj.getNamaPegawai();
             default : return null;
         }

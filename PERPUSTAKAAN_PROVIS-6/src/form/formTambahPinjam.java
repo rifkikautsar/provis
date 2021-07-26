@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.Random;
 import javax.swing.JOptionPane;
 import main.database;
+import main.formUtama;
+import main.userSession;
 import peminjaman.peminjaman;
 
 /**
@@ -25,6 +27,7 @@ public class formTambahPinjam extends javax.swing.JDialog {
     database db = new database();
     bukuTableModel tabelBuku = new bukuTableModel();
     anggotaTableModel tabelAnggota = new anggotaTableModel();
+    formUtama utama = new formUtama();
     /**
      * Creates new form formTambahPinjam
      */
@@ -260,6 +263,7 @@ public class formTambahPinjam extends javax.swing.JDialog {
         int i = tbBuku.getSelectedRow();
         txtKode.setText((String) tabelBuku.getValueAt(i, 0));
         txtJudul.setText((String) tabelBuku.getValueAt(i, 1));
+        //txtKode.setText(db.getUser());
     }//GEN-LAST:event_tbBukuMouseClicked
 
     private void txtCariBukuKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariBukuKeyReleased
@@ -294,7 +298,7 @@ public class formTambahPinjam extends javax.swing.JDialog {
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
-                
+        
         if(txtTglPinjam.getDate()==null || txtJudul.getText(
         ).equals("")||
            txtKode.getText().equals("")||
@@ -321,13 +325,15 @@ public class formTambahPinjam extends javax.swing.JDialog {
         String judul = txtJudul.getText();
         String nis = txtNIS.getText();
         String tgl = date2.format(txtTglPinjam.getDate());
-        String nip = "1";
+        String nip = new userSession().getNIP();
+        String np = new userSession().getNama();;
+        String status = "pinjam";
         String nama = txtNama.getText();
         int pilihan = JOptionPane.showConfirmDialog(rootPane, "Apakah data yang dimasukkan sudah benar?",
                 "Konfirmasi",JOptionPane.YES_NO_OPTION);
             if (pilihan==0){
                     try{
-                        db.tambahPeminjaman(new peminjaman(noPinjam,nis,nama,kdBuku,judul,tgl,nip));
+                        db.tambahPeminjaman(new peminjaman(noPinjam,nis,nama,kdBuku,judul,tgl,nip,np,status));
                         JOptionPane.showMessageDialog(rootPane, "Data berhasil ditambahkan",
                         "Info",JOptionPane.INFORMATION_MESSAGE);
                         setVisible(false);

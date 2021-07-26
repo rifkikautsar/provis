@@ -175,8 +175,6 @@ public class formTambahAnggota extends javax.swing.JDialog {
                 if(db.validasiTambahAnggota(nis).equals("OK")){
                     db.tambahAnggota(new anggota (txtNis.getText(),txtNama.getText(),txtKelas.getText(),
                 txtJurusan.getText(),txtTingkat.getText()));
-                JOptionPane.showMessageDialog(rootPane, "Data berhasil ditambahkan",
-                        "Info",JOptionPane.INFORMATION_MESSAGE);
                 setVisible(false);
                 }
             }   

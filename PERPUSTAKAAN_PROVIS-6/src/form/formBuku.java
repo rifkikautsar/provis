@@ -207,10 +207,9 @@ public class formBuku extends javax.swing.JInternalFrame {
             if(jawaban==0){
                 db.hapusBuku(kode);
                 refreshData();
-                JOptionPane.showMessageDialog(rootPane, "Data berhasil dihapus");
             }
         }
-        catch (ArrayIndexOutOfBoundsException e){
+        catch (IndexOutOfBoundsException e){
             JOptionPane.showMessageDialog(null, "Pilih data yang akan dihapus!",
                     "ERROR",JOptionPane.ERROR_MESSAGE);
         }
@@ -223,21 +222,28 @@ public class formBuku extends javax.swing.JInternalFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        formUpdateBuku formUpdate = new formUpdateBuku(frame,true);
+        try{
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            formUpdateBuku formUpdate = new formUpdateBuku(frame,true);
+
+            int baris = tbBuku.getSelectedRow();
+            String kode = (String) tabelBuku.getValueAt(baris, 0);
+            buku bk = db.pilihBuku(kode);
+            if(bk!=null){
+                formUpdate.setForm(bk);
+                formUpdate.setVisible(true);
+                refreshData();
+            }
+            else{
+                JOptionPane.showMessageDialog(rootPane, "Buku dengan kode "+kode+""
+                        + " tidak ditemukan");
+            }
+        }catch(IndexOutOfBoundsException e){
+            JOptionPane.showMessageDialog(null, "Pilih data terlebih dahulu!",
+                    "ERROR",JOptionPane.ERROR_MESSAGE);
+        }
         
-        int baris = tbBuku.getSelectedRow();
-        String kode = (String) tabelBuku.getValueAt(baris, 0);
-        buku bk = db.pilihBuku(kode);
-        if(bk!=null){
-            formUpdate.setForm(bk);
-            formUpdate.setVisible(true);
-            refreshData();
-        }
-        else{
-            JOptionPane.showMessageDialog(rootPane, "Buku dengan kode "+kode+""
-                    + " tidak ditemukan");
-        }
+        
         
     }//GEN-LAST:event_btnUpdateActionPerformed
 

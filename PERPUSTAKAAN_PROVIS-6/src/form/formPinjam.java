@@ -11,11 +11,16 @@ import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import main.database;
+import main.formUtama;
+import main.userSession;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -42,8 +47,8 @@ public class formPinjam extends javax.swing.JInternalFrame {
         initComponents();
         tampilData();
     }
+    
     public void tampilData(){
-        
         tabelPeminjaman.setData(db.tampilPeminjaman());
         tbPinjam.setModel(tabelPeminjaman);
     }
@@ -218,11 +223,9 @@ public class formPinjam extends javax.swing.JInternalFrame {
             if(jawaban==0){
                 db.hapusPeminjaman(no);
                 refreshData();
-                JOptionPane.showMessageDialog(rootPane, "Data berhasil dihapus");
             }
-        }
-        catch (ArrayIndexOutOfBoundsException e){
-            JOptionPane.showMessageDialog(null, "Pilih data yang akan dihapus!",
+        }catch (IndexOutOfBoundsException e){
+            JOptionPane.showMessageDialog(null, "Pilih data terlebih dahulu!",
                     "ERROR",JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_tblHapusActionPerformed
@@ -240,8 +243,11 @@ public class formPinjam extends javax.swing.JInternalFrame {
         formUpdate.setLocationRelativeTo(null);
         formUpdate.setVisible(true);
         refreshData();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Pilih data yang akan dihapus!"+e,
+        }catch(IndexOutOfBoundsException e){
+            JOptionPane.showMessageDialog(null, "Pilih data terlebih dahulu!",
+                    "ERROR",JOptionPane.ERROR_MESSAGE);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(null, "Pilih data terlebih dahulu!",
                     "ERROR",JOptionPane.ERROR_MESSAGE);
         }
         

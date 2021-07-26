@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package peminjaman;
+package pengembalian;
 
+import pengembalian.*;
 import buku.*;
 import java.util.Date;
 
@@ -12,16 +13,17 @@ import java.util.Date;
  *
  * @author rifki
  */
-public class peminjaman {
+public class pengembalian {
     private String noPinjam;
     private String tglPinjam;
     private String nis;
-    private String nama_siswa;
-    private String judul_buku;
-    private String kdBuku;
+    private String namaSiswa;
+    private String judulBuku;
+    private String tglKembali;
     private String nip;
     private String namaPegawai;
-    private String status;
+    private int denda;
+    
     
     
     public void setNoPinjam(String no){
@@ -33,23 +35,23 @@ public class peminjaman {
     public void setNIS(String nis){
         this.nis = nis;
     }
-    public void setKdBuku(String kd){
-        this.kdBuku = kd;
+    public void setTglKembali(String tgl2){
+        this.tglKembali = tgl2;
     }
     public void setNIP(String nip){
         this.nip = nip;
     }
     public void setNamaSiswa(String ns){
-        this.nama_siswa = ns;
+        this.namaSiswa = ns;
     }
     public void setJudulBuku(String jd){
-        this.judul_buku = jd;
+        this.judulBuku = jd;
     }
     public void setNamaPegawai(String np){
         this.namaPegawai = np;
     }
-    public void setStatus(String st){
-        this.status = st;
+    public void setDenda(int dd){
+        this.denda = dd;
     }
     public String getNoPinjam(){
         return noPinjam;
@@ -60,35 +62,34 @@ public class peminjaman {
     public String getNIS(){
         return nis;
     }
-    public String getKdBuku(){
-        return kdBuku;
+    public String getTglKembali(){
+        return tglKembali;
     }
     public String getNIP(){
         return nip;
     }
     public String getNamaSiswa(){
-        return nama_siswa;
+        return namaSiswa;
     }
     public String getJudulBuku(){
-        return judul_buku;
+        return judulBuku;
     }
     public String getNamaPegawai(){
         return namaPegawai;
     }
-    public String getStatus(){
-        return status;
+    public int getDenda(){
+        return denda;
     }
-    
-    public peminjaman(String no,String nis,String ns,String kd,String jd,
-            String tgl,String nip,String np,String status){
+    public pengembalian(String no,String nis,String ns,String jd,String tgl,
+            String tgl2,String nip,String np,int denda){
         setNoPinjam(no);
         setTglPinjam(tgl);
         setNIS(nis);
-        setKdBuku(kd);
+        setTglKembali(tgl2);
         setNIP(nip);
         setNamaSiswa(ns);
         setJudulBuku(jd);
         setNamaPegawai(np);
-        setStatus(status);
+        setDenda(denda);
     }
 }

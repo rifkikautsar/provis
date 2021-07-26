@@ -10,6 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import peminjaman.peminjaman;
+import pengembalian.pengembalian;
 /**
  *
  * @author rifki
@@ -19,7 +20,7 @@ public class database {
     public final String url = "jdbc:mysql://localhost:3306/db10119240perpustakaan";
     public final String user = "root";
     public final String pwd = "";
-    
+    private String username;
     
     
     public ArrayList<buku> tampilBuku(){
@@ -138,8 +139,13 @@ public class database {
             cs.setString("penerbit", bk.getPenerbit());
             cs.setString("tahun", bk.getTahun());
             cs.setInt("stok", bk.getStok());
+            cs.setString("status", "pinjam");
             cs.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan",
+                        "Info",JOptionPane.INFORMATION_MESSAGE);
         }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Data gagal ditambahkan : "+e.getMessage(),
+                    "ERROR",JOptionPane.ERROR_MESSAGE);
             System.out.println("Error : "+e.getMessage());
         }finally{
             try{
@@ -160,7 +166,10 @@ public class database {
             st = conn.createStatement();
             String sql = "DELETE from buku where kode_buku='"+nim+"'";
             st.executeUpdate(sql);
+            JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
         }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Data gagal dihapus : "+e.getMessage(),
+                    "ERROR",JOptionPane.ERROR_MESSAGE);
             System.out.println("Error : "+e.getMessage());
         }finally{
             try{
@@ -185,7 +194,11 @@ public class database {
                     + "stok='"+bk.getStok()+"'"
                     + "where kode_buku='"+bk.getkdBuku()+"'";
             st.executeUpdate(sql);
+            JOptionPane.showMessageDialog(null, "Data berhasil diupdate",
+                    "Info",JOptionPane.INFORMATION_MESSAGE);
         }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Data gagal diupdate : "+e.getMessage(),
+                    "ERROR",JOptionPane.ERROR_MESSAGE);
             System.out.println("Error : "+e.getMessage());
         }finally{
             try{
@@ -271,7 +284,11 @@ public class database {
                             + "'"+ag.getJurusan()+"',"
                             + "'"+ag.getTingkat()+"')";
             st.executeUpdate(sql1);
+            JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan",
+                        "Info",JOptionPane.INFORMATION_MESSAGE);
         }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Data gagal ditambahkan : "+e.getMessage(),
+                        "ERROR",JOptionPane.ERROR_MESSAGE);
             System.out.println("Error : "+e.getMessage());
         }finally{
             try{
@@ -329,6 +346,7 @@ public class database {
             st = conn.createStatement();
             String sql = "DELETE from anggota where nis='"+nis+"'";
             st.executeUpdate(sql);
+            
         }catch(Exception e){
             System.out.println("Error : "+e.getMessage());
         }finally{
@@ -354,7 +372,11 @@ public class database {
                     + "tingkat='"+ag.getTingkat()+"'"
                     + "where nis='"+ag.getNis()+"'";
             st.executeUpdate(sql);
+            JOptionPane.showMessageDialog(null, "Data berhasil diupdate",
+                    "Info",JOptionPane.INFORMATION_MESSAGE);
         }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Data gagal diupdate : "+e.getMessage(),
+                    "ERROR",JOptionPane.ERROR_MESSAGE);
             System.out.println("Error : "+e.getMessage());
         }finally{
             try{
@@ -443,7 +465,8 @@ public class database {
                     rs.getString("nis"),
                     rs.getString("nama_siswa"),rs.getString("kode_buku"),
                     rs.getString("judul_buku"),rs.getString("tgl_pinjam"),
-                    rs.getString("nip")));
+                    rs.getString("nip"),rs.getString("nama_petugas"),
+                    rs.getString("status")));
             }
             rs.close();
         }catch(Exception e){
@@ -469,7 +492,8 @@ public class database {
                             + "'"+pj.getTglPinjam()+"',"
                             + "'"+pj.getNIS()+"',"
                             + "'"+pj.getKdBuku()+"',"
-                            + "'"+pj.getNIP()+"')";
+                            + "'"+pj.getNIP()+"',"
+                            + "'"+pj.getStatus()+"')";
             st.executeUpdate(sql1);
         }catch(Exception e){
             System.out.println("Error : "+e.getMessage());
@@ -491,6 +515,7 @@ public class database {
             st = conn.createStatement();
             String sql = "DELETE from peminjaman where no_pinjam='"+no+"'";
             st.executeUpdate(sql);
+            JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
         }catch(Exception e){
             System.out.println("Error : "+e.getMessage());
         }finally{
@@ -512,7 +537,10 @@ public class database {
             String sql = "UPDATE peminjaman SET tgl_pinjam='"+tgl+"'"
                     + "where no_pinjam='"+no+"'";
             st.executeUpdate(sql);
+            JOptionPane.showMessageDialog(null, "Data berhasil diupdate",
+                "Info",JOptionPane.INFORMATION_MESSAGE);
         }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Data gagal dihapus : "+e.getMessage());
             System.out.println("Error : "+e.getMessage());
         }finally{
             try{
@@ -522,43 +550,6 @@ public class database {
                 conn.close();
             }catch(Exception e){}
         }
-    }
-    
-    public String loginUser(String username, String password){
-        String status = "";
-        boolean validasi = false;
-        Connection conn=null;
-        Statement st = null;
-        try{
-            Class.forName(driver);
-            conn = DriverManager.getConnection(url,user,pwd);
-            st = conn.createStatement();
-            String sql = "SELECT * from petugas where username='"+username+"'";
-            ResultSet rs = st.executeQuery(sql);
-           
-            while(rs.next()){
-                if (rs.getString("pass").equals(password)) {
-                    validasi = true;
-                    status = "OK";
-                }
-                else if(validasi==false) {
-                    status = "ERROR";
-                }
-            } 
-                //pt = null;
-            
-            rs.close();
-        }catch(Exception e){
-            System.out.println("Error : "+e.getMessage());
-        }finally{
-            try{
-                st.close();
-            }catch(Exception e){}
-            try{
-                conn.close();
-            }catch(Exception e){}
-        }
-    return status;
     }
     public ArrayList<peminjaman> cariPeminjaman(String keyword){
         ArrayList<peminjaman> list = new ArrayList<peminjaman>();
@@ -568,11 +559,13 @@ public class database {
             Class.forName(driver);
             conn = DriverManager.getConnection(url,user,pwd);
             st = conn.createStatement();
-            String sql = "SELECT p.no_pinjam, p.nis, a.nama_siswa, p.kode_buku,"
-                    + "b.judul_buku, p.tgl_pinjam, p.nip "
-                    + "from peminjaman p join anggota a using(nis) "
-                    + "join buku b using(kode_buku) where b.judul_buku like '%"+keyword+"%'"
-                    + "or a.nama_siswa like '%"+keyword+"%'";
+            String sql = "SELECT p.no_pinjam, p.nis, a.nama_siswa, " 
+                          + "b.judul_buku, p.tgl_pinjam,b.kode_buku, "
+                          + " pt.nama_petugas, p.nip, p.status "
+                          + " FROM peminjaman p JOIN anggota a USING(nis) "
+                          + " JOIN buku b USING(kode_buku) JOIN petugas pt USING(nip)" 
+                          + " where b.judul_buku like '%"+keyword+"%'"
+                          + "or a.nama_siswa like '%"+keyword+"%'";
             ResultSet rs = st.executeQuery(sql);
             
             while(rs.next()){
@@ -580,7 +573,8 @@ public class database {
                     rs.getString("nis"),
                     rs.getString("nama_siswa"),rs.getString("kode_buku"),
                     rs.getString("judul_buku"),rs.getString("tgl_pinjam"),
-                    rs.getString("nip")));
+                    rs.getString("nip"),rs.getString("nama_petugas"),
+                    rs.getString("status")));
             }
             rs.close();
         }catch(Exception e){
@@ -595,4 +589,190 @@ public class database {
         }
         return list;
     }
+    //pengembalian
+    public ArrayList<pengembalian> tampilPengembalian(){
+        ArrayList<pengembalian> list = new ArrayList<pengembalian>();
+        Connection conn=null;
+        Statement st = null;
+        CallableStatement cs = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql = "SELECT * from vTampilPengembalian";
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()){
+                list.add(new pengembalian(rs.getString("no_pinjam"),
+                    rs.getString("nis"),
+                    rs.getString("nama_siswa"),
+                    rs.getString("judul_buku"),
+                    rs.getString("tgl_pinjam"),
+                    rs.getString("tgl_kembali"),
+                    rs.getString("nip"),
+                    rs.getString("nama_petugas"),
+                    rs.getInt("denda")));
+            }
+            rs.close();
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+        return list;
+    }
+    public void tambahPengembalian(pengembalian pk){
+        Connection conn=null;
+        Statement st = null;
+        CallableStatement cs = null;
+        ResultSet rs = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            cs = conn.prepareCall("{ call inputPengembalian(?,?,?) }");
+            cs.setString("no_pinjam", pk.getNoPinjam());
+            cs.setString("tgl_kembali", pk.getTglKembali());
+            cs.setString("tgl_pinjam",pk.getTglPinjam());
+            cs.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan",
+                "Info",JOptionPane.INFORMATION_MESSAGE);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Data gagal ditambahkan : "+e.getMessage(),
+                "ERROR",JOptionPane.ERROR_MESSAGE);
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+    }
+    public void hapusPengembalian(String no){
+        Connection conn=null;
+        Statement st = null;
+        CallableStatement cs = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            cs = conn.prepareCall("{ call hpsPengembalian(?) }");
+            cs.setString("in_no_pinjam", no);
+            cs.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Data gagal dihapus : "+e.getMessage());
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+    }
+    public ArrayList<pengembalian> cariPengembalian(String keyword){
+        ArrayList<pengembalian> list = new ArrayList<pengembalian>();
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql = "SELECT p.no_pinjam, p.nis, a.nama_siswa," 
+                          + "b.judul_buku, p.tgl_pinjam, pk.tgl_kembali, pk.denda,"
+                          + " pt.nama_petugas, p.nip" 
+                          + " FROM peminjaman p JOIN anggota a USING(nis) "
+                          + " JOIN buku b USING(kode_buku) JOIN petugas pt USING(nip)" 
+                          + " JOIN pengembalian pk USING(no_pinjam)"
+                          + " where b.judul_buku like '%"+keyword+"%'"
+                          + "or a.nama_siswa like '%"+keyword+"%'";
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()){
+                list.add(new pengembalian(rs.getString("no_pinjam"),
+                    rs.getString("nis"),
+                    rs.getString("nama_siswa"),
+                    rs.getString("judul_buku"),
+                    rs.getString("tgl_pinjam"),
+                    rs.getString("tgl_kembali"),
+                    rs.getString("nip"),
+                    rs.getString("nama_petugas"),
+                    rs.getInt("denda")));
+            }
+            rs.close();
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+        return list;
+    }
+    public String loginUser(String username, String password){
+        String status = "";
+        boolean validasi = false;
+        Connection conn=null;
+        Statement st = null;
+        try{
+            Class.forName(driver);
+            conn = DriverManager.getConnection(url,user,pwd);
+            st = conn.createStatement();
+            String sql= "SELECT * FROM petugas WHERE username='"+username+"' "
+                    + "AND pass='"+password+"'";                
+            ResultSet rs = st.executeQuery(sql);
+            
+            //kondisi jika data ada
+            if(rs.next()){
+                userSession.setUsername(rs.getString("username"));
+                userSession.setNIP(rs.getString("nip"));
+                userSession.setNama("nama_petugas");
+                status = "OK";
+            }else{
+                status = "ERROR";
+            }
+            rs.close();
+        }catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+        }finally{
+            try{
+                st.close();
+            }catch(Exception e){}
+            try{
+                conn.close();
+            }catch(Exception e){}
+        }
+    return status;
+    }
+//    public String getNIP(user u){
+//        Connection conn=null;
+//        Statement st = null;
+//        String nip = "";
+//        try{
+//            Class.forName(driver);
+//            conn = DriverManager.getConnection(url,user,pwd);
+//            st = conn.createStatement();
+//            String sql = "select nip('"+u.getUser()+"') as nip";
+//            ResultSet rs = st.executeQuery(sql);
+//            while(rs.next()){
+//                nip = rs.getString("nip");
+//            }
+//        }catch(Exception e){
+//            
+//        }
+//        return nip;
+//    }
+    
 }

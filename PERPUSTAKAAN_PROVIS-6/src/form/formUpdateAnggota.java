@@ -175,8 +175,6 @@ public class formUpdateAnggota extends javax.swing.JDialog {
             if (pilihan==0){
                     db.updateAnggota(new anggota(txtNis.getText(),txtNama.getText(),txtKelas.getText(),
                         txtJurusan.getText(),txtTingkat.getText()));
-                JOptionPane.showMessageDialog(rootPane, "Data berhasil diupdate",
-                    "Info",JOptionPane.INFORMATION_MESSAGE);
                 setVisible(false);
             }
         }

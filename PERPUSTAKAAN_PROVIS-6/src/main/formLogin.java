@@ -7,20 +7,15 @@ package main;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import javax.swing.JFrame;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import petugas.petugas;
-import main.database;
 
 /**
  *
  * @author ASUS
  */
-public class formLogin extends javax.swing.JFrame {
-    private String username = "";
-    private String password = "";
-    formUtama utama = new formUtama();
+public final class formLogin extends javax.swing.JFrame {
     database db = new database();
     /**
      * Creates new form formLogin
@@ -47,6 +42,7 @@ public class formLogin extends javax.swing.JFrame {
         }
         return pilihan;
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -84,6 +80,11 @@ public class formLogin extends javax.swing.JFrame {
         });
 
         tblExit.setText("Exit");
+        tblExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tblExitActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Silahkan login terlebih dahulu");
@@ -140,18 +141,34 @@ public class formLogin extends javax.swing.JFrame {
 
     private void tblLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblLoginActionPerformed
         // TODO add your handling code here:
-        username = txtUsername.getText();
-        password = txtPassword.getText();
-        
-        if(db.loginUser(username,password).equals("OK")){
+        Connection conn=null;
+        Statement st = null;
+       
+        //jika username kosong
+            if (txtUsername.getText().isEmpty() ) {
+            JOptionPane.showMessageDialog(null,"Username tidak boleh kosong");
+            txtUsername.requestFocus();
+        }
+        //kondisi jika password kosong
+        else if (txtPassword.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null,"Password tidak boleh kosong");
+        }else{      
+            if(db.loginUser(txtUsername.getText(),txtPassword.getText()).equals("OK")){
             this.dispose();
-            utama.setVisible(true);
+            new formUtama().setVisible(true);
         }else{
             JOptionPane.showMessageDialog(rootPane, "Username / Password tidak sama!",
                     "ERROR",JOptionPane.ERROR_MESSAGE);
             
         }
+        
+        }
     }//GEN-LAST:event_tblLoginActionPerformed
+
+    private void tblExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tblExitActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_tblExitActionPerformed
 
     /**
      * @param args the command line arguments
