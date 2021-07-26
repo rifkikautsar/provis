@@ -19,11 +19,11 @@ public class formUtama extends javax.swing.JFrame {
     /**
      * Creates new form form_utama
      */
-   
+   String nama = userSession.getUsername();
     public formUtama() {
        
        initComponents();
-       txtNama.setText(userSession.getUsername());
+       txtNama.setText(nama.toUpperCase());
        
     }
     
@@ -43,6 +43,7 @@ public class formUtama extends javax.swing.JFrame {
         btnPinjam = new javax.swing.JButton();
         btnKembali = new javax.swing.JButton();
         panelUtama = new javax.swing.JDesktopPane();
+        txt = new javax.swing.JLabel();
         txtNama = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -92,6 +93,8 @@ public class formUtama extends javax.swing.JFrame {
             .addGap(0, 326, Short.MAX_VALUE)
         );
 
+        txt.setText("Petugas :");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -113,7 +116,9 @@ public class formUtama extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnKembali)
                         .addGap(18, 18, 18)
-                        .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -127,6 +132,7 @@ public class formUtama extends javax.swing.JFrame {
                     .addComponent(btnBuku)
                     .addComponent(btnAnggota)
                     .addComponent(btnPinjam)
+                    .addComponent(txt, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelUtama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -221,6 +227,7 @@ public class formUtama extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JDesktopPane panelUtama;
+    private javax.swing.JLabel txt;
     private javax.swing.JLabel txtNama;
     // End of variables declaration//GEN-END:variables
 }

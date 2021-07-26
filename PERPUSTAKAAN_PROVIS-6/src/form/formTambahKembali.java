@@ -232,12 +232,9 @@ public class formTambahKembali extends javax.swing.JDialog {
                 "Konfirmasi",JOptionPane.YES_NO_OPTION);
             if (pilihan==0){
                 try{
-                    db.tambahPengembalian(new pengembalian(no,nis,nama,judul,tgl1,tgl2,nip,np,denda));
-                    JOptionPane.showMessageDialog(rootPane, "Data berhasil ditambahkan",
-                    "Info",JOptionPane.INFORMATION_MESSAGE);
+                    db.tambahPengembalian(new pengembalian(no,nis,nama,judul,tgl1,tgl2,nip,np,denda,kode));
                     setVisible(false);
                 }catch(Exception e){
-                    JOptionPane.showMessageDialog(rootPane, "Data gagal ditambahkan : "+e);
                 }
             }
         }

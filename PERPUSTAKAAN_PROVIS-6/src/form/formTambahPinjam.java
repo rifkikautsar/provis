@@ -332,14 +332,8 @@ public class formTambahPinjam extends javax.swing.JDialog {
         int pilihan = JOptionPane.showConfirmDialog(rootPane, "Apakah data yang dimasukkan sudah benar?",
                 "Konfirmasi",JOptionPane.YES_NO_OPTION);
             if (pilihan==0){
-                    try{
                         db.tambahPeminjaman(new peminjaman(noPinjam,nis,nama,kdBuku,judul,tgl,nip,np,status));
-                        JOptionPane.showMessageDialog(rootPane, "Data berhasil ditambahkan",
-                        "Info",JOptionPane.INFORMATION_MESSAGE);
                         setVisible(false);
-                    }catch(Exception e){
-                        JOptionPane.showMessageDialog(rootPane, "Data gagal ditambahkan : "+e);
-                    }
                 }
         }
     }//GEN-LAST:event_btnSimpanActionPerformed

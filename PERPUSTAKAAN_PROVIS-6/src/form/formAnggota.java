@@ -261,7 +261,6 @@ public class formAnggota extends javax.swing.JInternalFrame {
             if(jawaban==0){
                 db.hapusAnggota(nis);
                 refreshData();
-                JOptionPane.showMessageDialog(rootPane, "Data berhasil dihapus");
             }
         }
         catch (IndexOutOfBoundsException e){

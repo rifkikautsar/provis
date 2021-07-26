@@ -22,10 +22,13 @@ public class pengembalian {
     private String tglKembali;
     private String nip;
     private String namaPegawai;
+    private String kdBuku;
     private int denda;
     
     
-    
+    public void setKdBuku(String kd){
+        this.kdBuku = kd;
+    }
     public void setNoPinjam(String no){
         this.noPinjam = no;
     }
@@ -52,6 +55,9 @@ public class pengembalian {
     }
     public void setDenda(int dd){
         this.denda = dd;
+    }
+    public String getKdBuku(){
+        return kdBuku;
     }
     public String getNoPinjam(){
         return noPinjam;
@@ -81,7 +87,7 @@ public class pengembalian {
         return denda;
     }
     public pengembalian(String no,String nis,String ns,String jd,String tgl,
-            String tgl2,String nip,String np,int denda){
+            String tgl2,String nip,String np,int denda,String kd){
         setNoPinjam(no);
         setTglPinjam(tgl);
         setNIS(nis);
@@ -91,5 +97,6 @@ public class pengembalian {
         setJudulBuku(jd);
         setNamaPegawai(np);
         setDenda(denda);
+        setKdBuku(kd);
     }
 }
