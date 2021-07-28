@@ -591,8 +591,8 @@ public class database {
                           + " pt.nama_petugas, p.nip, p.status "
                           + " FROM peminjaman p JOIN anggota a USING(nis) "
                           + " JOIN buku b USING(kode_buku) JOIN petugas pt USING(nip)" 
-                          + " where b.judul_buku like '%"+keyword+"%'"
-                          + "or a.nama_siswa like '%"+keyword+"%'";
+                          + " where b.judul_buku like '%"+keyword+"%' and p.status='pinjam'"
+                          + "or a.nama_siswa like '%"+keyword+"%' and p.status='pinjam'";
             ResultSet rs = st.executeQuery(sql);
             
             while(rs.next()){
