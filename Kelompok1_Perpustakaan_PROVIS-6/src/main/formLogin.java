@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
  */
 public final class formLogin extends javax.swing.JFrame {
     database db = new database();
+    
     /**
      * Creates new form formLogin
      */
@@ -25,6 +26,8 @@ public final class formLogin extends javax.swing.JFrame {
             System.exit(0);
         }else{
             initComponents();
+            txtUsername.setText("Masukkan username");
+            tblLogin.requestFocus();
         }
     }
     public int koneksi(){
@@ -71,6 +74,20 @@ public final class formLogin extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Password");
+
+        txtUsername.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtUsernameFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtUsernameFocusLost(evt);
+            }
+        });
+        txtUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsernameActionPerformed(evt);
+            }
+        });
 
         tblLogin.setText("Login");
         tblLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -145,7 +162,7 @@ public final class formLogin extends javax.swing.JFrame {
         Statement st = null;
        
         //jika username kosong
-            if (txtUsername.getText().isEmpty() ) {
+            if (txtUsername.getText().isEmpty() || txtUsername.getText().trim().equals("Masukkan username") ) {
             JOptionPane.showMessageDialog(null,"Username tidak boleh kosong");
             txtUsername.requestFocus();
         }
@@ -169,6 +186,23 @@ public final class formLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_tblExitActionPerformed
+
+    private void txtUsernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsernameFocusGained
+        // TODO add your handling code here:
+        txtUsername.setText("");
+    }//GEN-LAST:event_txtUsernameFocusGained
+
+    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUsernameActionPerformed
+
+    private void txtUsernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsernameFocusLost
+        // TODO add your handling code here:
+        if(txtUsername.getText().equals("")){
+        txtUsername.setText("Masukkan username");    
+        }
+        
+    }//GEN-LAST:event_txtUsernameFocusLost
 
     /**
      * @param args the command line arguments
